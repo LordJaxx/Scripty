@@ -1,7 +1,7 @@
 ## set-executionpolicy Unrestricted
 $start = function Show-Menu {
     
-        $Title = 'YOU ARE ABOUT TO USE SCRIPTY CREATED BY JACKSON GAMSBY HAVE FUN'
+        $Title = 'YOU ARE ABOUT TO USE SCRIPTY CREATED BY LORDJAXX HAVE FUN'
    
     Clear-Host
     Write-Host "|=================================== $Title ====================================|"
