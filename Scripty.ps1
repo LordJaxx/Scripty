@@ -12,17 +12,15 @@ $start = function Show-Menu {
     Write-Host "|4: That one thing nobody does... updates...                                                                                             |"
     Write-Host "|5: We didn't start the firewall.                                                                                                        |"
     Write-Host "|6: Rename Administrator and Guest to fun names.                                                                                         |"
-    Write-Host "|7. New passwords for everyone! (make sure to put the usernames in the script and to do this after '6' please)                           |"
-    Write-Host "|8. Install 7zip                                                                                                                         |"
-    Write-Host "|9. Install Firefox                                                                                                                      |"
-    Write-Host "|10. Install Notepad++                                                                                                                   |"
-    Write-Host "|11. Install vlc                                                                                                                         |"
-    Write-Host "|12. All of the above for windows 10. (MAKE SURE YOU ARE CERTAIN YOU WISH TO DO THIS AND THAT PROPER USERNAMES ARE IN SCRIPT)            |"
-    Write-Host "|13. All of the above for windows server 2019. (same warning as number 8, just make sure you really want to do this, it is not advised)  |"
+    Write-Host "|7: Delete unwanted users.                                                                                                               |"
+    Write-Host "|8: New passwords for everyone! (Make sure to do this after '6' please)                                                                  |"
+    Write-Host "|9: Take users on/off groups.                                                                                                            |"
+    Write-Host "|10: All of the above for windows 10.                                                                                                    |"
+    Write-Host "|11: All of the above for windows server 2019. (same warning as number 9, just make sure you really want to do this, it is not advised)  |"
     Write-Host "|Q: Press 'Q' to quit.                                                                                                                   |"
     Write-Host "|========================================================================================================================================|"
-    Write-Host ""
-    Write-Host ""
+    Write-Host " "
+    Write-Host " "
 }
 do
  {
@@ -57,29 +55,51 @@ do
     Set-NetFirewallProfile -Enabled True
 
     } '6' {
-    Rename-LocalUser -Name "Administrator" -NewName "Keenan"
-    Rename-LocalUser -Name "Guest" -NewName "Adrian"
-
-    } '7' {
-    net user Keenan CyberPatr!ot2022
-    net user Adrian CyberPatr!ot2022
-    Get-LocalUser | Out-Host
-    $User = Read-Host "Which user needs a new password?"
-    Set-LocalUser -Name $User -Password (ConvertTo-SecureString -AsPlainText "CyberPatr!ot2022" -Force)
-
-    } '8' {
-    Install-Package 7zip -Force
+    Rename-LocalUser -Name "Administrator" -NewName "Cisco"
+    Rename-LocalUser -Name "Guest" -NewName "Rocks"
     
+    } '7' {
+    do {
+      Get-LocalUser | Out-Host
+      $ans = Read-Host "Is a user being bad? If answer is 'no', you will return to the main menu."
+      $bad_user = Read-Host "Which user needs deleting?"
+      Remove-LocalUser -name $bad_user
+    } until ($ans -eq "no")
+    
+    } '8' {
+    net user Cisco CyberPatr!ot2023!
+    net user Rocks CyberPatr!ot2023!
+    do {
+      Get-LocalUser | Out-Host
+      $answer = Read-Host "Does a user need a new password? If answer is 'no', you will return to the main menu."
+      $User = Read-Host "Which user needs a new password?"
+      Set-LocalUser -Name $User -Password (ConvertTo-SecureString -AsPlainText "CyberPatr!ot2023!" -Force)
+    } until ($answer -eq 'no')
+
     } '9' {
-    Install-Package firefox -Force
+      do {
+        Get-LocalUser | Out-Host
+        $x = Read-Host "Does a user need to be added to a group? If answer is 'no', you will return to the main menu."
+        if ($x -eq 'no') {
+      Break
+        }
+        $y = Read-Host "Which group needs a new user?"
+        $z = Read-Host "Which users need to be added to this group? Please separate users with a comma, otherwise this will fail."
+        
+        Add-LocalGroupMember -Group $y -Member ($z) -Verbose
+      } until ($x -eq 'no')
 
+      do {
+        $a = Read-Host "Does a user need to be removed from a group? If answer is 'no', you will return to the main menu."
+        if ($a -eq 'no') {
+      Break
+        }
+        $b = Read-Host "Which group needs a user removed?"
+        Get-LocalGroup $b | Out-Host
+        $c = Read-Host "Which user needs to be removed?"
+        Remove-LocalGroupMember -Group $b -Member ($c) -Verbose
+      } until ($a -eq 'no')
     } '10' {
-    Install-Package notepadplusplus -Force
-
-    } '11' {
-    Install-Package vlc -Force
-
-    } '12' {
     auditpol.exe /set /category:"Account Logon" /failure:enable /success:enable
     auditpol.exe /set /category:"Account Management" /failure:enable /success:enable
     auditpol.exe /set /category:"Logon/Logoff" /failure:enable /success:enable
@@ -99,22 +119,52 @@ do
 
     Set-NetFirewallProfile -Enabled True
 
-    Rename-LocalUser -Name "Administrator" -NewName "Keenan"
-    Rename-LocalUser -Name "Guest" -NewName "Adrian"
+    Rename-LocalUser -Name "Administrator" -NewName "Cisco"
+    Rename-LocalUser -Name "Guest" -NewName "Rocks"
 
-    net user Keenan CyberPatr!ot2022
-    net user Adrian CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
+    net user Cisco CyberPatr!ot2022
+    net user Rocks CyberPatr!ot2022
+    
+    do {
+      Get-LocalUser | Out-Host
+      $ans = Read-Host "Is a user being bad? If answer is 'no', you will return to the main menu."
+      $bad_user = Read-Host "Which user needs deleting?"
+      Remove-LocalUser -name $bad_user
+    } until ($ans -eq "no")
 
-    Install-Package 7zip, firefox, notepadplusplus, vlc -Force
+    do {
+      Get-LocalUser | Out-Host
+      $answer = Read-Host "Does a user need a new password? If answer is 'no', you will return to the main menu."
+      $User = Read-Host "Which user needs a new password?"
+      Set-LocalUser -Name $User -Password (ConvertTo-SecureString -AsPlainText "CyberPatr!ot2023!" -Force)
+    } until ($answer -eq 'no')
 
-    } '13' {
+    do {
+      Get-LocalUser | Out-Host
+      $x = Read-Host "Does a user need to be added to a group? If answer is 'no', you will return to the main menu."
+      if ($x -eq 'no') {
+    Break
+      }
+      $y = Read-Host "Which group needs a new user?"
+      Get-LocalGroup $y | Out-Host
+      $z = Read-Host "Which users need to be added to this group? Please separate users with a comma, otherwise this will fail."
+      
+
+      Add-LocalGroupMember -Group $y -Member ($z) -Verbose
+    } until ($x -eq 'no')
+
+    do {
+      $a = Read-Host "Does a user need to be removed from a group? If answer is 'no', you will return to the main menu."
+      if ($a -eq 'no') {
+    Break
+      }
+      $b = Read-Host "Which group needs a user removed?"
+      Get-LocalGroup $b | Out-Host
+      $c = Read-Host "Which user needs to be removed?"
+      Remove-LocalGroupMember -Group $b -Member ($c) -Verbose
+    } until ($a -eq 'no')
+
+    } '11' {
     auditpol.exe /set /category:* /failure:enable /success:enable
 
     net accounts /minpwage:30
@@ -129,20 +179,34 @@ do
 
     Set-NetFirewallProfile -Enabled True
 
-    Rename-LocalUser -Name "Administrator" -NewName "Keenan"
-    Rename-LocalUser -Name "Guest" -NewName ""
+    Rename-LocalUser -Name "Administrator" -NewName "Cisco"
+    Rename-LocalUser -Name "Guest" -NewName "Rocks"
 
-    user Keenan CyberPatr!ot2022
-    net user Adrian CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
-    net user "USERNAME" CyberPatr!ot2022
+    net user Cisco CyberPatr!ot2023!
+    net user Rocks CyberPatr!ot2023!
+    
+    do {
+      Get-LocalUser | Out-Host
+      $x = Read-Host "Does a user need to be added to a group? If answer is 'no', you will return to the main menu."
+      if ($x -eq 'no') {
+    Break
+      }
+      $y = Read-Host "Which group needs a new user?"
+      $z = Read-Host "Which users need to be added to this group? Please separate users with a comma, otherwise this will fail."
+      
+      Add-LocalGroupMember -Group $y -Member ($z) -Verbose
+    } until ($x -eq 'no')
 
-    Install-Package 7zip, firefox, notepadplusplus, vlc -Force
+    do {
+      $a = Read-Host "Does a user need to be removed from a group? If answer is 'no', you will return to the main menu."
+      if ($a -eq 'no') {
+    Break
+      }
+      $b = Read-Host "Which group needs a user removed?"
+      Get-LocalGroup $b | Out-Host
+      $c = Read-Host "Which user needs to be removed?"
+      Remove-LocalGroupMember -Group $b -Member ($c) -Verbose
+    } until ($a -eq 'no')
 
     }
     }
